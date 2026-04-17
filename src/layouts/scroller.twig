@@ -1,0 +1,20 @@
+{#
+  {% extends '@layouts/scroller.twig' %}
+
+  {% set speed = 'fast' %}
+  {% set direction = 'left' %}
+
+  {% block items %}
+    <li class="scroller__item">Элемент 1</li>
+    <li class="scroller__item">Элемент 2</li>
+    <li class="scroller__item">Элемент 3</li>
+  {% endblock %}
+#}
+
+<div class="scroller" data-speed="{{ speed|default('fast') }}" data-direction="{{ direction|default('left') }}">
+  <ul class="scroller__inner">
+    {% block items %}
+
+    {% endblock %}
+  </ul>
+</div>

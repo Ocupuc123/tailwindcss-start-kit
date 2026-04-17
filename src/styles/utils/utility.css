@@ -1,0 +1,26 @@
+@utility scrollbar-hidden {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility container {
+  --layout-container-width: 1360px;
+  --layout-container-gap: 15px;
+
+  width: min(var(--layout-container-width), 100% - calc(var(--layout-container-gap) * 2));
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+@utility visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  clip-path: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+}
+

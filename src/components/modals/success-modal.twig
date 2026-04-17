@@ -1,0 +1,15 @@
+{#
+  {% include "@components/modals/success-modal.twig" %}
+#}
+
+{% extends '@layouts/modal.twig' %}
+
+{% set modalName = 'success-modal' %}
+{% set mods = ['modal--no-scale modal--fit-content'] %}
+
+{% block content %}
+  <h2 class="mb-4 text-2xl font-bold">Успешно!</h2>
+  <p class="mb-6">
+    Ваше действие было успешно выполнено.
+  </p>
+{% endblock %}

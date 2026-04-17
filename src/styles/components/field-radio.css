@@ -1,0 +1,65 @@
+.field-radio {
+  --checked-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
+
+  display: flex;
+  gap: 0 10px;
+  align-items: flex-start;
+  width: fit-content;
+}
+
+.field-radio__name {
+  display: inline-block;
+  font-size: 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.field-radio__input {
+  appearance: none;
+  position: relative;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  border: 1px solid var(--border-default);
+  border-radius: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+  outline: 0;
+  cursor: pointer;
+  transition: background var(--transition-time-default), border-color var(--transition-time-default);
+}
+
+.field-radio__input:checked {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+  background-image: var(--checked-bg-image);
+}
+
+.field-radio__input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.field-radio__input:not(:disabled):hover {
+  border-color: var(--color-primary);
+}
+
+.field-radio__input:disabled ~ .field-radio__name {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.field-radio__input:not(:disabled):focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-gray-200);
+  outline: none;
+}
+
+.field-radio.is-invalid .field-radio__input {
+  border-color: var(--color-danger);
+}
+
+.field-radio.is-invalid .field-radio__name {
+  color: var(--color-danger);
+}

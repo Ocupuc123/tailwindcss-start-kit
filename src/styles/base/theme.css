@@ -1,0 +1,43 @@
+/* stylelint-disable custom-property-empty-line-before */
+@theme {
+  --font-sans: 'Roboto', sans-serif;
+
+  --color-primary: #8778fe;
+  --color-primary-dark: #6b5ce7;
+
+  --color-border: var(--color-gray-300);
+  --color-focus: var(--color-primary-dark);
+  --color-link: var(--color-primary);
+  --color-link-hover: var(--color-primary-dark);
+
+  --color-danger: var(--color-red-600);
+  --color-success: var(--color-green-500);
+  --color-muted: var(--color-gray-400);
+  --color-heading: var(--color-gray-800);
+
+  --body-bg: var(--color-white);
+  --body-text-color: var(--color-gray-600);
+  --field-bg: var(--color-white);
+  --field-text-color: var(--color-gray-800);
+  --border-default: var(--color-border);
+
+  --btn-primary-bg: var(--color-primary);
+  --btn-primary-bg-hover: var(--color-primary-dark);
+  --btn-primary-text: var(--color-white);
+
+  --text-title: 2rem;
+  --text-title--line-height: 1.2;
+  --text-title--font-weight: 700;
+
+  --text-h1: clamp(30px, 5vw, 40px);
+  --text-h2: clamp(25px, 5vw, 35px);
+  --text-h3: clamp(20px, 5vw, 30px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --body-bg: #000000;
+    --color-heading: var(--color-white);
+    --body-text-color: var(--color-white);
+  }
+}

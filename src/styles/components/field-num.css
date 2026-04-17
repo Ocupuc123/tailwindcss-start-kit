@@ -1,0 +1,97 @@
+.field-num {
+  --field-height: 50px;
+
+  display: block;
+}
+
+.field-num__input-wrap {
+  display: block;
+}
+
+.field-num__input-and-btns {
+  position: relative;
+  display: block;
+  width: 140px;
+}
+
+.field-num__input {
+  appearance: textfield;
+  display: inline-block;
+  vertical-align: middle;
+  width: 100%;
+  min-height: var(--field-height);
+  margin: 0;
+  padding: 10px 45px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background-color: var(--field-bg);
+  color: var(--field-text-color);
+  font-size: 1rem;
+  font-family: inherit;
+  line-height: var(--text-base--line-height);
+  text-align: center;
+}
+
+.field-num__input::-webkit-outer-spin-button,
+.field-num__input::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.field-num.is-invalid .field-num__name,
+.field-num.is-invalid .field-num__input,
+.field-num.is-invalid .field-num__help-text {
+  color: var(--color-danger);
+}
+
+.field-num.is-invalid .field-num__input {
+  border-color: var(--color-danger);
+}
+
+.field-num:not(.field-num--disabled) .field-num__btn:focus ~ .field-num__input {
+  outline: 1px solid var(--color-primary);
+}
+
+.field-num__btn {
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  width: 40px;
+  padding: 0;
+  border: none;
+  border-top-right-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+  background: transparent;
+  background-position: center;
+  background-size: 26px;
+  background-repeat: no-repeat;
+  color: transparent;
+}
+
+.field-num__btn:focus {
+  outline: none;
+}
+
+.field-num__btn:hover,
+.field-num__btn:focus {
+  cursor: pointer;
+}
+
+.field-num--disabled .field-num__btn {
+  cursor: not-allowed;
+}
+
+.field-num--disabled .field-num__btn:hover,
+.field-num--disabled .field-num__btn:focus {
+  background-color: transparent;
+}
+
+.field-num__btn--plus {
+  right: 1px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-plus' viewBox='0 0 16 16'%3E%3Cpath d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4'/%3E%3C/svg%3E");
+}
+
+.field-num__btn--minus {
+  left: 1px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-dash' viewBox='0 0 16 16'%3E%3Cpath d='M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8'/%3E%3C/svg%3E");
+}

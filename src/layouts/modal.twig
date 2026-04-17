@@ -1,0 +1,25 @@
+{#
+  {% extends '@layouts/modal.twig' %}
+
+  {% set modalName = 'success-modal' %}
+  {% set mods = ['modal--no-scale modal--fit-content'] %}
+
+  {% block content %}
+    <h2 class="mb-4 text-2xl font-bold">Успешно!</h2>
+    <p class="mb-6">
+      Ваше действие было успешно выполнено.
+    </p>
+  {% endblock %}
+#}
+
+<div class="modal modal--preload {{ mods|join(' ') }}" data-modal="{{ modalName }}">
+  <div class="modal__wrapper">
+    <div class="modal__overlay" data-close-modal></div>
+    <div class="modal__content">
+      {% block content %}
+
+      {% endblock %}
+      <button class="modal__close-btn" type='button' aria-label='Закрыть попап' data-close-modal></button>
+    </div>
+  </div>
+</div>

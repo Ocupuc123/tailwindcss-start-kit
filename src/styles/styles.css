@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+/* COMPONENTS */
+@import "./components/btn.css" layer(components);
+@import "./components/field-text.css" layer(components);
+@import "./components/modal.css" layer(components);
+@import "./components/scroller.css" layer(components);
+@import "./components/custom-select.css" layer(components);
+@import "./components/field-checkbox.css" layer(components);
+@import "./components/field-radio.css" layer(components);
+@import "./components/field-num.css" layer(components);
+
+/* BASE */
+@import "./base/theme.css" layer(theme);
+@import "./base/global.css" layer(base);
+
+/* UTILITY */
+@import "./utils/utility.css";

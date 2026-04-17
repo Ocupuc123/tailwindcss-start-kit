@@ -1,0 +1,65 @@
+.field-checkbox {
+  --checked-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+
+  display: flex;
+  gap: 0 10px;
+  align-items: flex-start;
+  width: fit-content;
+}
+
+.field-checkbox__name {
+  display: inline-block;
+  font-size: 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.field-checkbox__input {
+  appearance: none;
+  position: relative;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  background-position: center;
+  background-repeat: no-repeat;
+  outline: 0;
+  cursor: pointer;
+  transition: background var(--transition-time-default), border-color var(--transition-time-default);
+}
+
+.field-checkbox__input:checked {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+  background-image: var(--checked-bg-image);
+}
+
+.field-checkbox__input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.field-checkbox__input:not(:disabled):hover {
+  border-color: var(--color-primary);
+}
+
+.field-checkbox__input:disabled ~ .field-checkbox__name {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.field-checkbox__input:not(:disabled):focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-gray-200);
+  outline: none;
+}
+
+.field-checkbox.is-invalid .field-checkbox__input {
+  border-color: var(--color-danger);
+}
+
+.field-checkbox.is-invalid .field-checkbox__name {
+  color: var(--color-danger);
+}

@@ -1,0 +1,35 @@
+/* stylelint-disable selector-max-type */
+html {
+  min-height: 100dvh;
+  background-color: var(--body-bg);
+  color: var(--body-text-color);
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+}
+
+body {
+  min-height: 100dvh;
+}
+
+img,
+svg,
+picture,
+video,
+iframe {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+img {
+  object-fit: contain;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--color-heading);
+}

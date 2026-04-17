@@ -1,0 +1,223 @@
+{#
+  Примеры использования:
+
+  {% import '@components/_ui/forms.twig' as forms %}
+
+  {{ forms.field_checkbox({ title: 'Чекбокс', attrs: { name: 'check0', checked: true } }) }}
+  {{ forms.field_radio({ title: 'Радио', attrs: { name: 'radio0' } }) }}
+  {{ forms.field_text({ title: 'Имя', attrs: { name: 'name', placeholder: 'Введите имя' } }) }}
+  {{ forms.field_file({ title: 'Загрузите файл', attrs: { name: 'file' } }) }}
+  {{ forms.field_num({ title: 'Количество', attrs: { name: 'qty', min: 1, max: 10 } }) }}
+  {{ forms.btn({ text: 'Кнопка', type: 'submit', mods: ['primary'] }) }}
+  {{
+    forms.custom_select({
+      placeholder: 'Начните вводить название',
+      buttonAriaLabel: 'Открыть список',
+      optionsList: [
+        {
+          text: 'Опция 1',
+          value: 'option1',
+          isActive: false
+        }
+      ],
+      mods: '',
+      attrs: {
+        'data-select': '',
+        'data-multiple': 'true',
+        'data-insert': true
+      }
+    })
+  }}
+#}
+
+{# ==================== field_checkbox ==================== #}
+{% macro field_checkbox(options = {}) %}
+  <label class="field-checkbox">
+    <input class="field-checkbox__input" type="checkbox"{% if options.attrs is defined %}{% for key, value in options.attrs %} {{ key }}{% if value != true %}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
+    <span class="field-checkbox__name">{{ options.title|raw }}</span>
+  </label>
+{% endmacro %}
+
+{# ==================== field_radio ==================== #}
+{% macro field_radio(options = {}) %}
+  <label class="field-radio">
+    <input class="field-radio__input" type="radio"{% if options.attrs is defined %}{% for key, value in options.attrs %} {{ key }}{% if value != true %}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
+    <span class="field-radio__name">{{ options.title|raw }}</span>
+  </label>
+{% endmacro %}
+
+{# ==================== field_text ==================== #}
+{% macro field_text(options = {}) %}
+  {%- set allMods = '' -%}
+  {%- if options.mods is defined and options.mods -%}
+    {%- set modsList = options.mods|split(',') -%}
+    {%- for mod in modsList -%}
+      {%- set allMods = allMods ~ ' field-text--' ~ mod|trim -%}
+    {%- endfor -%}
+  {%- endif -%}
+
+  <label class="field-text{{ allMods }}"
+    {%- if options.dataAttrs is defined %}
+      {%- for key, value in options.dataAttrs %} {{ key }}="{{ value }}"{% endfor -%}
+    {%- endif %}>
+    {%- if options.title is defined and options.title %}
+      <span class="field-text__name">{{ options.title }}</span>
+    {%- endif %}
+
+    {%- if options.isTextarea is defined and options.isTextarea %}
+      <textarea class="field-text__input"
+        {%- if options.attrs is defined %}
+          {%- for key, value in options.attrs %} {{ key }}="{{ value }}"{% endfor -%}
+        {%- endif %}>{{ options.val is defined ? options.val : '' }}</textarea>
+    {%- else %}
+      <input class="field-text__input"
+        type="{{ options.attrs is defined and options.attrs.type is defined ? options.attrs.type : 'text' }}"
+        value="{{ options.val is defined ? options.val : '' }}"
+        {%- if options.attrs is defined %}
+          {%- for key, value in options.attrs %} {{ key }}="{{ value }}"{% endfor -%}
+        {%- endif %}>
+    {%- endif %}
+
+    {%- if options.helpText is defined and options.helpText %}
+      <span class="field-text__help-text">{{ options.helpText }}</span>
+    {%- endif %}
+  </label>
+{% endmacro %}
+
+{# ==================== field_file ==================== #}
+{% macro field_file(options = {}) %}
+  {%- set allMods = '' -%}
+  {%- if options.mods is defined and options.mods -%}
+    {%- set modsList = options.mods|split(',') -%}
+    {%- for mod in modsList -%}
+      {%- set allMods = allMods ~ ' field-file--' ~ mod|trim -%}
+    {%- endfor -%}
+  {%- endif -%}
+
+  {%- set selectText = options.text.selectText|default('Выберите файл(ы)') -%}
+  {%- set nothingText = options.text.nothingText|default('') -%}
+  {%- set flesSelectedText = options.text.flesSelectedText|default('Выбрано файлов:') -%}
+
+  <div class="field-file{{ allMods }}">
+    {%- if options.title is defined and options.title %}
+      <div class="field-file__name">{{ options.title }}</div>
+    {%- endif %}
+
+    <label class="field-file__input-wrap">
+      <input class="field-file__input"
+        type="file"
+        data-multiple-caption="{{ flesSelectedText }} {count}"
+        {%- if options.attrs is defined %}
+          {%- for key, value in options.attrs %} {{ key }}{% if value != true %}="{{ value }}"{% endif %}{% endfor -%}
+        {%- endif %}>
+      <div class="field-file__name-text" data-button-text="{{ selectText }}">{{ nothingText }}</div>
+    </label>
+
+    {%- if options.helpText is defined and options.helpText %}
+      <div class="field-file__help-text">{{ options.helpText }}</div>
+    {%- endif %}
+  </div>
+{% endmacro %}
+
+{# ==================== field_num ==================== #}
+{% macro field_num(options = {}) %}
+  {%- set allMods = '' -%}
+  {%- if options.mods is defined and options.mods -%}
+    {%- if options.mods is array -%} {# заменили is iterable на is array #}
+      {%- for mod in options.mods -%}
+        {%- set allMods = allMods ~ ' field-num--' ~ mod|trim -%}
+      {%- endfor -%}
+    {%- else -%}
+      {%- set modsList = options.mods|split(',') -%}
+      {%- for mod in modsList -%}
+        {%- set allMods = allMods ~ ' field-num--' ~ mod|trim -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- if options.attrs is defined and options.attrs.disabled is defined and options.attrs.disabled -%}
+    {%- set allMods = allMods ~ ' field-num--disabled' -%}
+  {%- endif -%}
+
+  {%- set val = options.val|default(0) -%} {# убрали фильтр int #}
+
+  <div class="field-num{{ allMods }}">
+    {%- if options.title is defined and options.title %}
+      <span class="field-num__name">{{ options.title }}</span>
+    {%- endif %}
+
+    <span class="field-num__input-wrap">
+      <span class="field-num__input-and-btns">
+        <button class="field-num__btn field-num__btn--minus" type="button">−</button>
+        <button class="field-num__btn field-num__btn--plus" type="button">+</button>
+        <input class="field-num__input" type="number" value="{{ val }}"
+          {%- if options.attrs is defined %}
+            {%- for key, value in options.attrs %} {{ key }}{% if value != true %}="{{ value }}"{% endif %}{% endfor -%}
+          {%- endif %}>
+      </span>
+    </span>
+
+    {%- if options.helpText is defined and options.helpText %}
+      <span class="field-num__help-text">{{ options.helpText }}</span>
+    {%- endif %}
+  </div>
+{% endmacro %}
+
+{# ==================== btn ==================== #}
+{% macro btn(options = {}) %}
+  {%- set mods = options.mods|default([])|join(' ') -%}
+  {% if options.href %}
+    <a href="{{ options.href }}" class="btn {{ mods }}">{{ options.text }}</a>
+  {% else %}
+    <button type="{{ options.type|default('button') }}" class="btn {{ mods }}">{{ options.text }}</button>
+  {% endif %}
+{% endmacro %}
+
+{# ==================== custom_select ==================== #}
+{% macro custom_select(options = {}) %}
+  {%- set allMods = '' -%}
+  {%- if options.mods is defined and options.mods -%}
+    {%- set modsList = options.mods|split(',') -%}
+    {%- for mod in modsList -%}
+      {%- set allMods = allMods ~ ' custom-select--' ~ mod|trim -%}
+    {%- endfor -%}
+  {%- endif -%}
+
+  <div class="custom-select{{ allMods }}"
+    {%- if options.attrs is defined %}
+      {%- for key, value in options.attrs %} {{ key }}="{{ value }}"{% endfor -%}
+    {%- endif %}>
+
+    {%- if options.label is defined and options.label %}
+      <span class="custom-select__label">{{ options.label }}</span>
+    {%- endif %}
+
+    {%- if options.placeholder is defined and options.placeholder %}
+      <span class="custom-select__placeholder">{{ options.placeholder }}</span>
+    {%- endif %}
+
+    <button class="custom-select__button"
+      type="button"
+      aria-label="{{ options.buttonAriaLabel|default('Выберите одну из опций') }}"
+      {%- if options.disabled is defined and options.disabled %} disabled{% endif %}>
+      <span class="custom-select__text"></span>
+      <span class="custom-select__icon"></span>
+    </button>
+
+    <div class="custom-select__list">
+      <ul class="custom-select__list-wrap" role="listbox">
+        {%- if options.optionsList is defined %}
+          {%- for item in options.optionsList %}
+            <li class="custom-select__item"
+              tabindex="0"
+              data-select-value="{{ item.value }}"
+              aria-selected="{{ item.isActive ? 'true' : 'false' }}"
+              role="option">
+              {{- item.text -}}
+            </li>
+          {%- endfor %}
+        {%- endif %}
+      </ul>
+    </div>
+  </div>
+{% endmacro %}

@@ -1,0 +1,34 @@
+{
+  "name": "twig-tailwindcss-start-kit",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "format:dist": "npx prettier --write ./dist/**/*.html --ignore-path .prettierignore",
+    "block": "node .create-block.js",
+    "page": "node .create-page.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@tailwindcss/postcss": "^4.2.2",
+    "@vituum/vite-plugin-twig": "^2.0.1",
+    "@zackad/prettier-plugin-twig": "^0.17.0",
+    "eslint": "^10.1.0",
+    "eslint-plugin-sonarjs": "^4.0.2",
+    "eslint-plugin-unicorn": "^63.0.0",
+    "globals": "^17.4.0",
+    "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "stylelint": "^17.5.0",
+    "stylelint-config-hudochenkov": "^13.0.2",
+    "stylelint-config-tailwindcss": "^1.0.1",
+    "vituum": "^2.0.1"
+  },
+  "dependencies": {
+    "@fancyapps/ui": "^6.1.13",
+    "@fluejs/noscroll": "^1.0.0"
+  }
+}

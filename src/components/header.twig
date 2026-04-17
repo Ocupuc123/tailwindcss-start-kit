@@ -1,0 +1,43 @@
+<header class="header">
+  <div class="container" data-form-validate data-callback="base">
+    <form class="py-5">
+      {% import '@components/_ui/forms.twig' as forms %}
+
+      {{
+        forms.field_num({
+          title: 'Количество',
+          attrs: {
+            name: 'qty',
+            min: 1,
+            max: 10
+          }
+        })
+      }}
+      {{
+        forms.field_checkbox({
+          title: 'Чекбокс',
+          attrs: {
+            name: 'check0',
+            checked: true
+          }
+        })
+      }}
+      {{
+        forms.field_radio({
+          title: 'Радио',
+          attrs: {
+            name: 'radio0',
+            checked: true
+          }
+        })
+      }}
+    </form>
+
+    <h1 class="text-h1 text-title">awdawd</h1>
+    <h2 class="text-h2 text-title">awdawd</h2>
+    <p>
+      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quod voluptatibus corrupti impedit doloremque dignissimos voluptas, ullam, accusamus
+      amet eius ut, quo reprehenderit esse? Quibusdam pariatur quis nisi? Unde, dolore assumenda!
+    </p>
+  </div>
+</header>

@@ -1,0 +1,21 @@
+.btn {
+  @apply hover:bg-(--btn-primary-bg-hover) hover:text-(--btn-primary-text) focus:outline-2 focus:outline-focus disabled:opacity-50 disabled:cursor-not-allowed;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 50px;
+  padding: 5px 20px;
+  border: none;
+  border-radius: var(--radius-md);
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  font-size: var(--text-base);
+  font-family: inherit;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  transition: color var(--default-transition-duration), background-color var(--default-transition-duration);
+}

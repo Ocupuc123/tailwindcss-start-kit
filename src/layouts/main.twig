@@ -1,0 +1,29 @@
+<html lang="ru">
+  <head>
+    {% block head %}
+      <meta charset="utf-8" />
+      <meta name='viewport' content='width=device-width,initial-scale=1' />
+      <meta name="format-detection" content="telephone=no" />
+      <title>
+        {% block title %}
+          Default Title
+        {% endblock %}
+      </title>
+      <link rel="stylesheet" href="/src/styles/styles.css" />
+      <script type="module" src="/src/scripts/index.js"></script>
+    {% endblock %}
+  </head>
+  <body>
+    {% block header %}
+      {% include '@components/header.twig' %}
+    {% endblock %}
+
+    {% block content %}
+
+    {% endblock %}
+
+    {% block footer %}
+      {% include '@components/footer.twig' %}
+    {% endblock %}
+  </body>
+</html>
