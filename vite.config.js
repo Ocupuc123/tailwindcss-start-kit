@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import vituum from 'vituum';
 import twig from '@vituum/vite-plugin-twig';
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
 export default defineConfig({
   css: {
@@ -25,6 +26,16 @@ export default defineConfig({
       namespaces: {
         components: './src/components',
         layouts: './src/layouts'
+      }
+    }),
+    ViteImageOptimizer({
+      jpg: {
+        quality: 80,
+        progressive: true
+      },
+      webp: {
+        quality: 80,
+        lossless: false
       }
     })
   ]
