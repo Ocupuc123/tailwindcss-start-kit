@@ -1,0 +1,88 @@
+{#
+  Компонент табов на Alpine.js + Tailwind CSS v4
+
+  Параметры:
+    tabs: массив объектов { id, title, content }
+    activeTab: ID активного таба по умолчанию (опционально)
+    variant: стиль табов ('default', 'underline', 'pills')
+    classes: дополнительные классы для обёртки
+    tabClasses: дополнительные классы для кнопок табов
+    contentClasses: дополнительные классы для контента
+
+  Пример использования:
+    {% include '@components/_ui/tabs.twig' with {
+      tabs: [
+        { id: 'tab1', title: 'Tab 1', content: '<p>Content 1</p>' },
+        { id: 'tab2', title: 'Tab 2', content: '<p>Content 2</p>' },
+        { id: 'tab3', title: 'Tab 3', content: '<p>Content 3</p>' }
+      ],
+      activeTab: 'tab2',
+      variant: 'underline',
+      classes: 'my-8'
+    } %}
+#}
+
+{% set activeTab = activeTab ?? tabs[0].id ?? '' %}
+{% set variant = variant ?? 'default' %}
+{% set classes = classes ?? '' %}
+{% set tabClasses = tabClasses ?? '' %}
+{% set contentClasses = contentClasses ?? '' %}
+
+<div
+  x-data="{
+    activeTab: '{{
+  activeTab
+  }}',
+    setActiveTab(tabId) {
+      this.activeTab = tabId;
+    },
+    isActive(tabId) {
+      return this.activeTab === tabId;
+    }
+  }"
+  class="tabs {{ classes }}"
+>
+  {# Навигация табов #}
+  <ul class="mb-6 flex flex-wrap gap-1" role="tablist" aria-label="Табы">
+    {% for tab in tabs %}
+      <li>
+        <button
+          type="button"
+          @click="setActiveTab('{{ tab.id }}')"
+          :class="{
+            'bg-primary text-white': isActive('{{ tab.id }}'),
+            '': !isActive('{{
+          tab.id
+          }}')
+          }"
+          class="{{ tabClasses }} inline-flex cursor-pointer items-center justify-center px-5 py-2.5 rounded-4xl bg-gray-100"
+          :aria-selected="isActive('{{ tab.id }}')"
+          role="tab"
+          aria-controls="tab-panel-{{ tab.id }}"
+          id="tab-{{ tab.id }}"
+        >
+          {{ tab.title }}
+        </button>
+      </li>
+    {% endfor %}
+  </ul>
+
+  {# Контент табов #}
+  <div class="{{ contentClasses }}">
+    {% for tab in tabs %}
+      <div
+        x-show="isActive('{{ tab.id }}')"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        class="bg-white p-3 dark:bg-gray-900"
+        role="tabpanel"
+        aria-labelledby="tab-{{ tab.id }}"
+        id="tab-panel-{{ tab.id }}"
+        {% if tab.id != activeTab %}x-cloak{% endif %}
+      >
+        {{ tab.content|raw }}
+      </div>
+    {% endfor %}
+  </div>
+</div>

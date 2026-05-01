@@ -1,0 +1,138 @@
+{#
+Универсальный компонент dropdown на Alpine.js
+
+Параметры:
+buttonText: текст кнопки (по умолчанию 'Options')
+items: массив объектов { href, text, icon?, classes? }
+- href: ссылка (если пусто, то кнопка <button>)
+  - text: текст элемента
+  - icon: HTML иконки (опционально)
+  - classes: дополнительные классы для элемента (опционально)
+  position: положение панели относительно кнопки ('bottom-left', 'bottom-right', 'top-left', 'top-right') (по умолчанию
+  'bottom-left')
+  buttonClasses: дополнительные классы для кнопки
+  panelClasses: дополнительные классы для панели
+  itemClasses: дополнительные классы для элементов списка
+  openOnHover: открывать при наведении (по умолчанию false)
+  hoverDelay: задержка закрытия при наведении в миллисекундах (по умолчанию 500)
+  closeOnClick: закрывать после клика на элемент (по умолчанию true)
+
+  Пример использования:
+  {% include '@components/_ui/dropdown.twig' with {
+  buttonText: 'Меню',
+  items: [
+  { href: '#new', text: 'Новая задача', icon: '<svg>...</svg>' },
+  { href: '#edit', text: 'Редактировать', classes: 'text-blue-600' },
+  { href: '', text: 'Кнопка без ссылки', icon: '<svg>...</svg>' },
+  { href: '#delete', text: 'Удалить', classes: 'text-red-600 hover:bg-red-50' }
+  ],
+  position: 'bottom-right',
+  buttonClasses: 'bg-primary text-white',
+  panelClasses: 'shadow-lg',
+  itemClasses: 'px-4 py-3',
+  openOnHover: true,
+  hoverDelay: 500
+  } %}
+  #}
+
+  {% set buttonText = buttonText ?? 'Options' %}
+  {% set items = items ?? [] %}
+  {% set position = position ?? 'bottom-left' %}
+  {% set buttonClasses = buttonClasses ?? '' %}
+  {% set panelClasses = panelClasses ?? '' %}
+  {% set itemClasses = itemClasses ?? '' %}
+  {% set openOnHover = openOnHover ?? false %}
+  {% set hoverDelay = hoverDelay ?? 500 %}
+  {% set closeOnClick = closeOnClick ?? true %}
+
+  {# Определяем классы позиционирования #}
+  {% set positionClasses = {
+  'bottom-left': 'left-0 top-full mt-2 origin-top-left',
+  'bottom-right': 'right-0 top-full mt-2 origin-top-right',
+  'top-left': 'left-0 bottom-full mb-2 origin-bottom-left',
+  'top-right': 'right-0 bottom-full mb-2 origin-bottom-right'
+  } %}
+
+  <div x-data="{
+    open: false,
+    timer: null,
+    toggle() {
+      if (this.open) {
+        return this.close()
+      }
+      this.$refs.button.focus()
+      this.open = true
+    },
+    close(focusAfter) {
+      if (! this.open) return
+      this.open = false
+      focusAfter && focusAfter.focus()
+    },
+    startTimer() {
+      this.timer = setTimeout(() => {
+        this.open = false
+      }, {{ hoverDelay }})
+    },
+    clearTimer() {
+      if (this.timer) {
+        clearTimeout(this.timer)
+        this.timer = null
+      }
+    }
+  }" {% if openOnHover %}
+       x-on:mouseenter="clearTimer(); open = true"
+       x-on:mouseleave="startTimer()"
+       x-on:mouseenter.panel="clearTimer()"
+       x-on:mouseleave.panel="startTimer()"
+       {% endif %}
+       x-on:keydown.escape.prevent.stop="close($refs.button)"
+       x-on:focusin.window="! $refs.panel.contains($event.target) && close()" x-id="['dropdown-button']"
+       class="relative inline-block">
+    {# Кнопка #}
+    <button x-ref="button" x-on:click="toggle()" :aria-expanded="open" :aria-controls="$id('dropdown-button')"
+            type="button"
+            class="{{ buttonClasses }} relative flex items-center justify-center gap-2 rounded-lg border border-(--color-border) bg-white px-4 py-2 whitespace-nowrap text-gray-800 shadow-sm hover:border-(--color-primary) hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 dark:hover:border-(--color-primary) cursor-pointer">
+      <span>{{ buttonText }}</span>
+
+      {# Иконка стрелки #}
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+           class="size-4 transition-transform duration-200" :class="open ? 'rotate-180' : ''">
+        <path fill-rule="evenodd"
+              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+              clip-rule="evenodd" />
+      </svg>
+    </button>
+
+    {# Панель #}
+    <div x-ref="panel" x-show="open" x-transition.origin.top.left {% if not openOnHover %}
+         x-on:click.outside="close($refs.button)" {% endif %} :id="$id('dropdown-button')" x-cloak
+         class="{{ positionClasses[position] }} {{ panelClasses }} absolute z-10 min-w-48 rounded-lg border border-(--color-border) bg-white p-1.5 shadow-sm outline-none dark:bg-gray-800 dark:border-gray-700">
+      {% for item in items %}
+      {% if item.href is defined and item.href is not empty %}
+      {# Элемент-ссылка #}
+      <a href="{{ item.href }}"
+         class="{{ itemClasses }} {{ item.classes ?? '' }} flex w-full items-center gap-3 rounded-md px-2 py-2 text-left text-gray-800 transition-colors hover:bg-gray-50 focus-visible:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:text-gray-300 dark:hover:bg-gray-700 lg:py-1.5"
+         {% if closeOnClick %} @click="close($refs.button)" {% endif %}>
+        {% if item.icon is defined and item.icon is not empty %}
+        <span class="shrink-0 [&>svg]:size-4">
+          {{ item.icon|raw }}
+        </span>
+        {% endif %}
+        <span class="flex-1">{{ item.text }}</span>
+      </a>
+      {% else %}
+      {# Элемент-кнопка (без ссылки) #}
+      <button type="button"
+              class="{{ itemClasses }} {{ item.classes ?? '' }} flex w-full items-center gap-3 rounded-md px-2 py-2 text-left text-gray-800 transition-colors hover:bg-gray-50 focus-visible:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:text-gray-300 dark:hover:bg-gray-700 lg:py-1.5"
+              {% if closeOnClick %} @click="close($refs.button)" {% endif %}>
+        {% if item.icon is defined and item.icon is not empty %}
+        <span class="dropdown__item-icon shrink-0 [&>svg]:size-4">
+          {{ item.icon|raw }}
+        </span>
+        {% endif %}
+        <span class="flex-1">{{ item.text }}</span>
+      </button>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>

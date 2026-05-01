@@ -1,0 +1,93 @@
+{#
+Компонент аккордеона на Alpine.js + collapse плагин
+
+Параметры:
+items: массив объектов { title, content }
+multiple: разрешить открывать несколько элементов одновременно (по умолчанию false)
+openFirst: открыть первый элемент при загрузке (по умолчанию false)
+classes: дополнительные классы для обёртки
+itemClasses: дополнительные классы для каждого элемента аккордеона
+buttonClasses: дополнительные классы для кнопки заголовка
+contentClasses: дополнительные классы для контента
+iconPosition: положение иконки ('left', 'right', 'none') (по умолчанию 'right')
+duration: длительность анимации collapse в миллисекундах (по умолчанию 300)
+
+Пример использования:
+{% include '@components/_ui/accordion.twig' with {
+items: [
+{ title: 'Первый элемент', content: '<p>Контент первого элемента</p>' },
+{ title: 'Второй элемент', content: '<p>Контент второго элемента</p>' },
+{ title: 'Третий элемент', content: '<p>Контент третьего элемента</p>' }
+],
+multiple: false,
+openFirst: true,
+classes: 'my-8',
+buttonClasses: 'bg-gray-100 hover:bg-gray-200',
+contentClasses: 'bg-white',
+duration: 500
+} %}
+#}
+
+{% set multiple = multiple ?? false %}
+{% set openFirst = openFirst ?? false %}
+{% set classes = classes ?? '' %}
+{% set itemClasses = itemClasses ?? '' %}
+{% set buttonClasses = buttonClasses ?? '' %}
+{% set contentClasses = contentClasses ?? '' %}
+{% set iconPosition = iconPosition ?? 'right' %}
+{% set duration = duration ?? 300 %}
+
+<div x-data="{
+    // Состояния открытых элементов
+    {% if multiple %}
+      opened: Array({{ items|length }}).fill(false),
+    {% else %}
+      activeIndex: {{ openFirst ? '0' : 'null' }},
+    {% endif %}
+    // Переключение элемента
+    toggle(index) {
+      {% if multiple %}
+        this.opened[index] = !this.opened[index];
+      {% else %}
+        this.activeIndex = this.activeIndex === index ? null : index;
+      {% endif %}
+    },
+    // Проверка открыт ли элемент
+    isOpen(index) {
+      {% if multiple %}
+        return this.opened[index];
+      {% else %}
+        return this.activeIndex === index;
+      {% endif %}
+    }
+  }" class="{{ classes }}" x-init="{% if multiple and openFirst %}this.opened[0] = true;{% endif %}">
+  <ul>
+    {% for item in items %}
+    {% set index = loop.index0 %}
+    <li class="border-b border-(--color-border) {{ itemClasses }}" x-data="{ index: {{ index }} }">
+      <button type="button" @click="toggle(index)" :aria-expanded="isOpen(index)"
+              class="{{ buttonClasses }} flex w-full cursor-pointer items-center justify-between gap-3 bg-transparent py-4 text-left text-base transition-colors"
+              :class="{
+            'text-(--color-primary)': isOpen(index),
+            '': !isOpen(index)
+          }">
+        <span class="flex-1">{{ item.title }}</span>
+        <svg class="size-5 shrink-0 transition-transform" :style="'transition-duration: {{ duration }}ms;'"
+             :class="isOpen(index) ? 'rotate-180' : ''" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+             viewBox="0 0 20 20" fill="currentColor" data-slot="icon">
+          <path fill-rule="evenodd"
+                d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                clip-rule="evenodd"></path>
+        </svg>
+      </button>
+
+      <div x-show="isOpen(index)" x-collapse.duration.{{ duration }}ms class="{{ contentClasses }}" {% if not (openFirst
+           and index==0) %}x-cloak{% endif %}>
+        <div class="pb-4">
+          {{ item.content|raw }}
+        </div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

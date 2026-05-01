@@ -1,3 +1,4 @@
+import './vendor/alpine';
 // import {initModals} from './modules/modals/init-modals';
 // import {Form} from './modules/form-validate/form';
 // import { uploadFile } from './modules/upload-file';
@@ -5,26 +6,21 @@
 // import { initPhoneInput } from './modules/form-validate/init-phone-input';
 // import { scrollers } from './modules/scrollers';
 
+// Utils
 // ---------------------------------
 
-window.addEventListener('DOMContentLoaded', () => {
+// Modules
+// ---------------------------------
+// scrollers();
+// initModals();
+// uploadFile()
 
-  // Utils
-  // ---------------------------------
+// const phones = document.querySelectorAll('[data-phone-mask]');
+// phones.forEach((phone) => initPhoneInput(phone));
 
-  // Modules
-  // ---------------------------------
-  // scrollers();
-  // initModals();
-  // uploadFile()
+// const select = new CustomSelect();
+// select.init();
 
-  // const phones = document.querySelectorAll('[data-phone-mask]');
-  // phones.forEach((phone) => initPhoneInput(phone));
-
-  // const select = new CustomSelect();
-  // select.init();
-
-  // const form = new Form();
-  // window.form = form;
-  // form.init();
-});
+// const form = new Form();
+// window.form = form;
+// form.init();

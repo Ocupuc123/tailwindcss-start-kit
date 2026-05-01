@@ -31,7 +31,9 @@
     "vituum": "^2.0.2"
   },
   "dependencies": {
+    "@alpinejs/collapse": "^3.15.12",
     "@fancyapps/ui": "^6.1.14",
-    "@fluejs/noscroll": "^1.0.0"
+    "@fluejs/noscroll": "^1.0.0",
+    "alpinejs": "^3.15.12"
   }
 }

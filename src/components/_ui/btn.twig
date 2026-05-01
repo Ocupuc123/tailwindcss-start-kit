@@ -1,0 +1,13 @@
+{#
+  Вызов компонента:
+  {% include '@components/_ui/btn.twig' with {
+    text: 'Button',
+    classes: 'btn-primary'
+  } %}
+ #}
+
+{% if href %}
+  <a class="btn {{ classes }}" href="{{ href }}">{{ text }}</a>
+{% else %}
+  <button class="btn {{ classes }}" type="button">{{ text }}</button>
+{% endif %}

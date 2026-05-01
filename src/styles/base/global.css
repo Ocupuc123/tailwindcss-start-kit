@@ -33,3 +33,7 @@ h5,
 h6 {
   color: var(--color-heading);
 }
+
+[x-cloak] {
+  display: none;
+}

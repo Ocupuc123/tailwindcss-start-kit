@@ -6,6 +6,16 @@
 
 {% block content %}
   <main>
-
+{% include '@components/_ui/dropdown.twig' with {
+  buttonText: 'Меню',
+  items: [
+  { href: '#new', text: 'Новая задача' },
+  { href: '#edit', text: 'Редактировать' },
+  { href: '', text: 'Кнопка без ссылки' },
+  { href: '#delete', text: 'Удалить' }
+  ],
+  openOnHover: true,
+  hoverDelay: 500
+  } %}
   </main>
 {% endblock %}
